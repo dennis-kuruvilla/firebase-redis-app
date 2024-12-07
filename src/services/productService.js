@@ -2,7 +2,13 @@ const Product = require('../models/productModel');
 const { db } = require('../config/firebaseConfig');
 
 async function createProduct(productData) {
-  const newProduct = new Product(productData.name, productData.description, productData.price, productData.category);
+  const newProduct = new Product(
+    productData.name,
+    productData.description,
+    productData.price,
+    productData.category,
+    productData.createdBy
+  );
   const docRef = await db.collection('products').add(newProduct.toFirestoreFormat());
   return { id: docRef.id, ...newProduct };
 }
