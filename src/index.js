@@ -6,6 +6,7 @@ const client = require('./redisClient');
 const authMiddleware = require('./middlewares/authMiddleware');
 const bodyParser = require('body-parser');
 const axios = require('axios');
+const productRoutes = require('./routes/productRoutes')
 
 
 app.use(bodyParser.json());
@@ -137,6 +138,8 @@ app.get('/cache', async (req, res) => {
         res.status(500).send('Internal Server Error');
     }
 });
+
+app.use('/api/v1/products', authMiddleware, productRoutes);
 
 app.listen(PORT, () => {
     console.log(`Server is up and running on port ${PORT}`);
