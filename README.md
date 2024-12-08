@@ -20,7 +20,7 @@ Before running the application, ensure you have the following installed:
    ```bash
    git clone <repository-url>
    cd <repository-name>
-```
+   ```
 
 2. **Populate the .env File**
 
@@ -28,19 +28,20 @@ Before running the application, ensure you have the following installed:
 
    ```bash
    REDIS_HOST=redis
-REDIS_PORT=6379
-FIREBASE_API_KEY=<your-firebase-api-key>
-```
+   REDIS_PORT=6379
+   FIREBASE_API_KEY=<your-firebase-api-key>
+   ```
 
 3. **Place Firebase Service Account Key**
 - Copy the serviceAccountKey.json file from your Firebase project's settings (found under Project Settings > Service Accounts).
 - Paste this serviceAccountKey.json file in the root directory of the project.
+
 4. **Build and Start the Application**
 After setting up the .env file and adding the Firebase credentials, you can start the application using Docker Compose:
 
    ```bash
    docker-compose up
-```
+   ```
 This will build the application, create the necessary containers, and start the Express app and Redis service.
 
 	- The app will be available at **http://localhost:3000**.
@@ -50,5 +51,5 @@ This will build the application, create the necessary containers, and start the 
 5. **Running tests**
 
    ```bash
-npm test
-```
+   npm test
+   ```
