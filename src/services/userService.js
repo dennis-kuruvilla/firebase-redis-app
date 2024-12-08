@@ -46,3 +46,27 @@ exports.updateRecentlyViewedProduct = async (userId, productId) => {
     throw new Error('Failed to update recently viewed products');
   }
 };
+
+exports.getRecentlyViewed = async (userId) => {
+  try {
+    const collectionRef = db.collection(`users/${userId}/recentlyViewed`);
+    const snapshot = await collectionRef.orderBy('timestamp', 'desc').limit(10).get();
+
+    if (snapshot.empty) {
+      return [];
+    }
+
+    const recentlyViewed = [];
+    snapshot.forEach((doc) => {
+      recentlyViewed.push({
+        productId: doc.id,
+        ...doc.data(),
+      });
+    });
+
+    return recentlyViewed;
+  } catch (error) {
+    console.error('Error fetching recently viewed products:', error.message);
+    throw new Error('Failed to fetch recently viewed products');
+  }
+};
