@@ -1,5 +1,6 @@
 const productService = require('../services/productService');
 const userService = require('../services/userService');
+const cacheService = require('../services/cacheService');
 
 exports.createProduct = async (req, res) => {
   try {
@@ -20,6 +21,9 @@ exports.getProduct = async (req, res) => {
     const product = await productService.getProductById(productId);
 
     await userService.addRecentlyViewedProduct(userId, productId);
+
+    const cacheKey = `recentlyViewed:${userId}`;
+    await cacheService.deleteFromCache(cacheKey);
 
     console.log(`User ${userId} viewed the product ${productId}`)
 
