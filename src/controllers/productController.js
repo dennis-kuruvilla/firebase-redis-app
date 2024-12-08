@@ -19,7 +19,7 @@ exports.getProduct = async (req, res) => {
 
     const product = await productService.getProductById(productId);
 
-    await userService.updateRecentlyViewedProduct(userId, productId);
+    await userService.addRecentlyViewedProduct(userId, productId);
 
     console.log(`User ${userId} viewed the product ${productId}`)
 

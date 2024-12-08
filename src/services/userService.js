@@ -12,38 +12,17 @@ exports.getUserById = async (userId) => {
   }
 };
 
-exports.updateRecentlyViewedProduct = async (userId, productId) => {
-  const recentlyViewedRef = db.collection('users').doc(userId).collection('recentlyViewed').doc(productId);
+exports.addRecentlyViewedProduct = async (userId, productId) => {
+  const recentlyViewedRef = db.collection('users').doc(userId).collection('recentlyViewed');
 
   try {
-    const recentlyViewedDoc = await recentlyViewedRef.get();
-
-    if (recentlyViewedDoc.exists) {
-      await recentlyViewedRef.update({
-        timestamp: admin.firestore.FieldValue.serverTimestamp(),
-      });
-    } else {
-      await recentlyViewedRef.set({
-        productId,
-        timestamp: admin.firestore.FieldValue.serverTimestamp(),
-      });
-
-      const recentlyViewedQuery = await db.collection('users')
-        .doc(userId)
-        .collection('recentlyViewed')
-        .orderBy('timestamp', 'desc')
-        .get();
-
-      if (recentlyViewedQuery.size > 10) {
-        const docsToDelete = recentlyViewedQuery.docs.slice(10);
-        for (const doc of docsToDelete) {
-          await doc.ref.delete();
-        }
-      }
-    }
+    await recentlyViewedRef.add({
+      productId,
+      timestamp: admin.firestore.FieldValue.serverTimestamp(),
+    });
   } catch (error) {
-    console.error('Error updating recently viewed products:', error.message);
-    throw new Error('Failed to update recently viewed products');
+    console.error('Error adding recently viewed product:', error.message);
+    throw new Error('Failed to add recently viewed product');
   }
 };
 
