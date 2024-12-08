@@ -21,6 +21,8 @@ exports.getProduct = async (req, res) => {
 
     await userService.updateRecentlyViewedProduct(userId, productId);
 
+    console.log(`User ${userId} viewed the product ${productId}`)
+
     res.status(200).json(product);
   } catch (error) {
     console.error('Error in getProduct:', error.message);
