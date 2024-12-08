@@ -1,4 +1,5 @@
 const productService = require('../services/productService');
+const userService = require('../services/userService');
 
 exports.createProduct = async (req, res) => {
   try {
@@ -14,12 +15,18 @@ exports.createProduct = async (req, res) => {
 exports.getProduct = async (req, res) => {
   try {
     const { productId } = req.params;
+    const userId = req.user.uid;
+
     const product = await productService.getProductById(productId);
+
+    await userService.updateRecentlyViewedProduct(userId, productId);
+
     res.status(200).json(product);
   } catch (error) {
+    console.error('Error in getProduct:', error.message);
     res.status(404).json({ error: error.message });
   }
-}
+};
 
 exports.getAllProducts = async (req, res) => {
   try {
